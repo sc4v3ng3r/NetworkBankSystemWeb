@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>On-line Banking</title>
+        <link rel="StyleSheet" type="text/css" href="css/IndexCss.css" />
+    </h:head>
+    
+    <h:body>
+         
+        <h:form id="form" styleClass="mainContainer">
+            <p:panelGrid columns="1" styleClass="centered">
+                <h:graphicImage value="images/onenetworkbank-logo.jpg"/>
+                
+                <h:outputLabel for="accountInput" 
+                               value="Número da Conta">
+                    
+                </h:outputLabel>
+                
+                <p:inputText id="accountInput" 
+                             value="#{BankAccountBean.accountNumber}"
+                             >
+                </p:inputText>
+                
+                <p:button
+                    styleClass="accessButton"
+                    value="Acessar"
+                    outcome="#{OperationsBean.carryOn()}"
+                    >
+                </p:button>
+                
+                <p:panelGrid columns="">
+                    <p:button 
+                        value="Criar Conta"
+                        outcome="#{NewAccountBean.callNewAccountPage()}">
+                    </p:button>
+                    
+                    <p:button
+                        value="Visualizar Contas"
+                        outcome="showAccounts.xhtml">
+                    </p:button>
+                    
+                </p:panelGrid>
+                
+                <h:outputText id="erro"
+                              styleClass="error"
+                              value="#{BankAccountBean.status}">
+                </h:outputText>
+                
+            </p:panelGrid>
+        </h:form>
+        
+    </h:body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Criar Conta</title>
+    </h:head>
+    <h:body>
+        <h:form id="formulario">
+        <p:fieldset legend="Criar Nova Conta">
+            <p:panelGrid>
+                <p:outputLabel value="Nome: " for="nameField"></p:outputLabel>
+                <p:inputText id="nameField" value="#{NewAccountBean.clientName}" ></p:inputText>
+                
+                <p:selectOneRadio value="#{NewAccountBean.accountType}">
+                    <f:selectItem 
+                        itemLabel="Conta Normal"
+                        itemValue="NORMAL"
+                        >
+                                      
+                    </f:selectItem>
+                    <f:selectItem 
+                        itemLabel="Conta Especial"
+                        itemValue="SPECIAL">
+                            
+                    </f:selectItem>
+                </p:selectOneRadio>
+                
+                <p:commandButton value="Confirmar"
+                                 action="#{NewAccountBean.confirmNewAccount()}"
+                                 update="@form :debug">
+                    
+                </p:commandButton>
+                
+                <p:button
+                    outcome="#{NewAccountBean.returnIndex()}"
+                    value="Cancelar">
+                </p:button>
+                
+                
+            </p:panelGrid>
+        </p:fieldset>
+            
+        </h:form>
+        <h:outputText id="debug" value="#{NewAccountBean.debug}"></h:outputText>
+        
+    </h:body>
+</html>
+

@@ -1,0 +1,46 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 2, 2017, 1:20:37 PM
+    Author     : scavenger
+*/
+/*
+td{
+    padding: 0;
+    margin: 0;
+    background-color: green;
+    
+}*/
+.mainContainer{
+    position: absolute;
+    left: 35%;
+    top: 15%;  
+}
+
+.centered{
+    text-align: center;
+}
+
+label {
+    font-size: 35px;
+    color: darkblue;
+    font-weight: bolder;
+}
+
+.accessButton{
+   width: 50%; 
+}
+
+.error{
+    color: red;
+    font-weight: bolder;
+    font-style: italic;
+}
+/*
+.nestedGrid .ui-panelgrid>*>tr,
+.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}*/

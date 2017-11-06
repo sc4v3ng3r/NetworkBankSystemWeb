@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/scavenger/NetBeansProjects/WebBankSystem/src/java/controller/AccountBean.java</file>
+            <file>file:/home/scavenger/NetBeansProjects/WebBankSystem/src/java/model/AccountFactory.java</file>
+            <file>file:/home/scavenger/NetBeansProjects/WebBankSystem/src/java/database/TestClientDataBase.java</file>
+            <file>file:/home/scavenger/NetBeansProjects/WebBankSystem/src/java/model/Account.java</file>
+            <file>file:/home/scavenger/NetBeansProjects/WebBankSystem/web/index.xhtml</file>
+            <file>file:/home/scavenger/NetBeansProjects/WebBankSystem/web/showAccounts.xhtml</file>
+            <file>file:/home/scavenger/NetBeansProjects/WebBankSystem/web/criarConta.xhtml</file>
+        </group>
+    </open-files>
+</project-private>
