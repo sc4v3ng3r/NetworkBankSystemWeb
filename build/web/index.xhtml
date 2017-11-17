@@ -12,6 +12,7 @@
     <h:body>
          
         <h:form id="form" styleClass="mainContainer">
+            
             <p:panelGrid columns="1" styleClass="centered">
                 <h:graphicImage value="images/onenetworkbank-logo.jpg"/>
                 
@@ -21,36 +22,34 @@
                 </h:outputLabel>
                 
                 <p:inputText id="accountInput" 
-                             value="#{BankAccountBean.accountNumber}"
+                             required="true"
+                             requiredMessage="Insira o número da conta."
+                             value="#{BankLoginBean.accountNumber}"
                              >
                 </p:inputText>
                 
-                <p:button
+                <p:commandButton
                     styleClass="accessButton"
                     value="Acessar"
-                    outcome="#{OperationsBean.carryOn()}"
+                    action="#{BankLoginBean.login()}"
                     >
-                </p:button>
+                </p:commandButton>
                 
                 <p:panelGrid columns="">
+                    
                     <p:button 
                         value="Criar Conta"
-                        outcome="#{NewAccountBean.callNewAccountPage()}">
+                        outcome="#{AccountManagerBean.callNewAccountPage()}">
                     </p:button>
                     
                     <p:button
                         value="Visualizar Contas"
                         outcome="showAccounts.xhtml">
                     </p:button>
-                    
                 </p:panelGrid>
                 
-                <h:outputText id="erro"
-                              styleClass="error"
-                              value="#{BankAccountBean.status}">
-                </h:outputText>
-                
             </p:panelGrid>
+            <p:growl showDetail="true" life="1500" autoUpdate="true"/>
         </h:form>
         
     </h:body>

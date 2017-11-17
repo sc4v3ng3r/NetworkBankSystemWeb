@@ -5,10 +5,24 @@
  */
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  *
  * @author scavenger
  */
+@Entity
+@Table(name="specialAccount", schema = "MyBank")
+/*
+@AttributeOverrides(value = {
+    @AttributeOverride(name ="accountNumber", column = @Column(name="accountNumber") ),
+    @AttributeOverride(name="m_value", column = @Column(name="value")),
+    @AttributeOverride(name="m_type", column = @Column(name="type")),
+    @AttributeOverride(name="m_typeDescription", column = @Column(name="typeDescription")),
+    @AttributeOverride(name="m_credit", column = @Column(name="credit")),
+   
+    })*/
 public class SpecialAccount extends Account {
     private double m_credit;
     
@@ -16,6 +30,10 @@ public class SpecialAccount extends Account {
         super(ACCOUNT_SPECIAL);
         setTypeDescription(ACCOUNT_TYPE_SPECIAL);
         setCredit(credit); 
+    }
+    
+    private SpecialAccount(){
+        super();
     }
     
     public final void setCredit(double credit){ m_credit = credit;}
@@ -29,11 +47,12 @@ public class SpecialAccount extends Account {
     
     @Override
     public String toString(){
-        return  "Número: " + getNumber() + ";" +
-                "Tipo: " + getTypeDesciription() + ";" +
-                "Saldo Total: " + getBalanceTotal() + ";" +
-                "Saldo Parcial:" + getBalance() + ";" + 
-                "Crédito: " + getCredit();
+        return  "Número: " + getNumber() + "\n" +
+                "Tipo: " + getTypeDescription() + "\n" +
+                "Saldo Total: " + getBalanceTotal() + "\n" +
+                "Saldo Parcial:" + getBalance() + "\n" + 
+                "Crédito: " + getCredit() + "\n" +
+                "Operations: " + getOperationList();
     }
     
 }

@@ -5,17 +5,40 @@
  */
 package model;
 
-//import banksystem.model.accountfactory.Account;
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  *
  * @author scavenger
  */
-public class Client {
-    
+@Entity
+@Table(name="client", schema="MyBank"/*,
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = "accountNumber", name = "FK_CLIENT_ACCOUNT")*/  )
+/*@NamedQueries(
+        @NamedQuery(name="Client.getAll",query="SELECT c FROM client"  )
+)*/
+public class Client implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private long m_id;
     private String m_name;
+    
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name="accountNumber")
     private Account m_account;
     
     public Client(){}
@@ -39,13 +62,15 @@ public class Client {
     
     public Account getAccount(){ return m_account; }
     
-    public int getId(){ return this.hashCode();}
+    public long getId(){ return this.m_id;}
+    
+    public void setId(long id){ this.m_id = id;}
     
     @Override
     public String toString(){
         return "Nome: " + m_name +
+                "\nID: " + m_id +
                 "\nConta " + m_account;
     }
-
-
+    
 }

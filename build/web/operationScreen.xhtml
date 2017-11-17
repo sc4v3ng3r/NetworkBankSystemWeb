@@ -10,18 +10,110 @@
         <link rel="StyleSheet" type="text/css" href="css/operationScreenStyles.css"/>
     </h:head>
     <h:body>
-        
-        <p:panel header="Cliente: Marcos Antonio Boaventura | Conta: 30766-1"
+        <p:panel header="#{OperationBean.header}"
                  styleClass="center">
             <p:panel>
-                <p:button value="Saque" styleClass="marginBottom"></p:button>
-                <p:button value="Saldo" styleClass="floatRight marginBottom"></p:button>
-                <p:button value="Depósito" styleClass="marginBottom"></p:button>
+                <h:form>
+                <p:commandButton value="Saque" 
+                                 styleClass="marginBottom"
+                                 type="button"
+                                 onclick="PF('DraftDialog').show();"
+                                 oncomplete="PF('DraftDialog').hide();"
+                                 >            
+                </p:commandButton>
+                    
+                    <p:button value="Saldo" 
+                              styleClass="floatRight marginBottom">
+                        
+                    </p:button>
+                
+                <p:commandButton value="Depósito" 
+                          styleClass="marginBottom"
+                          type="button"
+                          onclick="PF('DepositDialog').show();"
+                          oncomplete="PF('DepositDialog').hide();"
+                          >
+                              
+                </p:commandButton>
                 <p:button value="Extrato" styleClass="floatRight marginBottom"></p:button>
+                
                 <p:button value="Transferência"></p:button>
-                <p:button value="Sair" styleClass="floatRight" outcome="index.xhtml"></p:button>
+                
+                <p:commandButton value="Sair" 
+                                 styleClass="floatRight" 
+                                 action="#{OperationBean.closeSession()}"></p:commandButton>
+                </h:form>
             </p:panel>
         </p:panel>
+        
+        <!-- dialogs section -->
+        
+        <p:dialog header="Insira o Valor" 
+                  modal="true" 
+                  widgetVar="DraftDialog" 
+                  minHeight="40"
+                  resizable="false">
+            <h:form>
+                <h:outputText value="Valor" />
+                <p:inputText value="#{OperationBean.value}"></p:inputText>
+                
+                <p:commandButton  
+                              value="Confirmar"
+                              action="#{OperationBean.execute(4)}"/>
+            
+                <p:commandButton type="button"
+                             
+                             value="Cancelar"
+                             onclick="PF('DraftDialog').hide();"
+                             />
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Insira o Valor" 
+                  modal="true" 
+                  widgetVar="DepositDialog" 
+                  minHeight="40"
+                  resizable="false">
+            <h:form>
+                <h:outputText value="Valor" />
+                <p:inputText value="#{OperationBean.value}"></p:inputText>
+                
+                <p:commandButton  
+                              value="Confirmar"
+                              action="#{OperationBean.execute(3)}"/>
+            
+                <p:commandButton type="button"
+                             
+                             value="Cancelar"
+                             onclick="PF('DepositDialog').hide();"
+                             />
+            <p:growl showDetail="true" life="2000" autoUpdate="true"/>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="TRANSFERÊNCIA" 
+                  modal="true" 
+                  widgetVar="TransferDialog" 
+                  minHeight="40"
+                  resizable="false">
+            <h:form>
+                <h:outputText value="Valor: " />
+                <p:inputText></p:inputText>
+                
+                
+                <p:commandButton  
+                              value="Confirmar"
+                              action="#{OperationBean.execute(5)}"/>
+            
+                <p:commandButton type="button"
+                             
+                             value="Cancelar"
+                             onclick="PF('DraftDialog').hide();"
+                             />
+            </h:form>
+        </p:dialog>
+        
+        
     </h:body>
 </html>
 

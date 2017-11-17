@@ -5,23 +5,56 @@
  */
 package model;
 //import banksystem.model.Operation;
+import model.operation.builder.Operation;
+import model.operation.builder.BankingOperation;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  *
  * @author scavenger
  */
-
+@Entity
+@Table(name="account", schema = "MyBank")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account implements Serializable {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "accountNumber")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private long m_number;
+    
+    //@OneToOne(mappedBy = "m_account")
+    //private Client m_client;
+    
     private double m_value;
     private byte m_type;
-    
     private String m_typeDescription;
-    private ArrayList<Operation> m_operationList;
+    
+    @OneToMany( mappedBy = "m_currentAccount",
+            targetEntity= BankingOperation.class,
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    //@JoinColumn(referencedColumnName = "accountNumber")
+    private List<Operation> m_operationList;
     
     protected transient final ReentrantLock m_locker = new ReentrantLock();
     
@@ -33,6 +66,10 @@ public abstract class Account implements Serializable {
     
     public Account(byte type) {
         setType(type);
+        m_operationList = new ArrayList<>();
+    }
+    
+    public Account(){
         m_operationList = new ArrayList<>();
     }
     
@@ -48,19 +85,17 @@ public abstract class Account implements Serializable {
         m_operationList = new ArrayList<>();
     }
 
-    
-    
     public final void setType(byte type){ m_type = type; }
     
-    public final void setBalance(double value) {
+    public void setBalance(double value) {
         m_value = value; 
     }
     
-    public void setNumber(long number){ m_number = number; }
+    public final void setNumber(long number){ m_number = number; }
     
     public final long getNumber(){ return m_number; }
     
-    public double getBalance() {
+    public final double getBalance() {
         return m_value; 
     }
     
@@ -77,15 +112,24 @@ public abstract class Account implements Serializable {
         m_typeDescription = desc;
     }
     
-    public String getTypeDesciription(){
+    public final String getTypeDescription(){
         return m_typeDescription;
+    }
+    
+    public final void setOperationList(List<Operation> list){
+        m_operationList = list;
+    }
+    
+    public final List<Operation> getOperationList(){
+        return m_operationList;
     }
     
     @Override
     public String toString(){
-        return "Número: " + m_number + ";" +
-                "Tipo: " + m_typeDescription + ";" +
-                "Saldo: " + m_value + ";";
+        return "Número: " + m_number + "\n" +
+                "Tipo: " + m_typeDescription + "\n" +
+                "Saldo: " + m_value + "\n" + 
+                "Operations: " + m_operationList;
     }
     
     public void addOperation(Operation op){

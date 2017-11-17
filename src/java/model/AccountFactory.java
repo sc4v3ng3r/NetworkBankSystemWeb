@@ -5,8 +5,6 @@
  */
 package model;
 
-import static model.Account.ACCOUNT_NORMAL;
-import static model.Account.ACCOUNT_SPECIAL;
 import static model.Account.ACCOUNT_TYPE_NORMAL;
 import static model.Account.ACCOUNT_TYPE_SPECIAL;
 
@@ -37,6 +35,7 @@ public class AccountFactory {
         }
         return ac;
     }
+    
     private Account getAccount(int type){
         Account ac = null;
         

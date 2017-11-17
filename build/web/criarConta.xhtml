@@ -12,9 +12,9 @@
         <p:fieldset legend="Criar Nova Conta">
             <p:panelGrid>
                 <p:outputLabel value="Nome: " for="nameField"></p:outputLabel>
-                <p:inputText id="nameField" value="#{NewAccountBean.clientName}" ></p:inputText>
+                <p:inputText id="nameField" value="#{AccountManagerBean.clientName}" ></p:inputText>
                 
-                <p:selectOneRadio value="#{NewAccountBean.accountType}">
+                <p:selectOneRadio value="#{AccountManagerBean.accountType}">
                     <f:selectItem 
                         itemLabel="Conta Normal"
                         itemValue="NORMAL"
@@ -29,13 +29,13 @@
                 </p:selectOneRadio>
                 
                 <p:commandButton value="Confirmar"
-                                 action="#{NewAccountBean.confirmNewAccount()}"
+                                 action="#{AccountManagerBean.confirmNewAccount()}"
                                  update="@form :debug">
                     
                 </p:commandButton>
                 
                 <p:button
-                    outcome="#{NewAccountBean.returnIndex()}"
+                    outcome="#{AccountManagerBean.returnIndex()}"
                     value="Cancelar">
                 </p:button>
                 
@@ -44,7 +44,7 @@
         </p:fieldset>
             
         </h:form>
-        <h:outputText id="debug" value="#{NewAccountBean.debug}"></h:outputText>
+        <h:outputText id="debug" value="#{AccountManagerBean.debug}"></h:outputText>
         
     </h:body>
 </html>
