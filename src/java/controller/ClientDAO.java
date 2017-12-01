@@ -8,6 +8,7 @@ package controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
 import model.Client;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -18,7 +19,7 @@ import web.bank.system.util.NewHibernateUtil;
  *
  * @author scavenger
  */
-
+@ManagedBean
 public class ClientDAO implements Serializable{
     private List<Client> m_clientList = new ArrayList<>();
     
@@ -80,7 +81,7 @@ public class ClientDAO implements Serializable{
         transaction.begin();
         m_clientList = session.createCriteria(Client.class).
                 setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-        transaction.commit();
+        //transaction.commit();
         session.close();
         System.out.println("ClientDAO::updateList() | LIST SIZE " + m_clientList.size());
     }
@@ -89,7 +90,19 @@ public class ClientDAO implements Serializable{
         updateList();
         return getList();
     }
-   
+    
+    public Client getById(long id){
+        Client c = null;
+        try{
+            Session session = NewHibernateUtil.getSessionFactory().openSession();
+             c = (Client) session.get(Client.class, id);
+             session.close();
+        } catch(Exception ex){
+            System.out.println(ex);
+        }
+        
+        return c;
+    }
     public void removeFirst(){
         if (m_clientList.size() == 0)
             return;

@@ -124,19 +124,19 @@ public class BankingOperation implements Operation, Serializable {
         this.setName(builder.m_name);
     }
     
-    public void setId(long id){ m_operationId = id;}
+    protected void setId(long id){ m_operationId = id; }
     public long getId(){ return m_operationId; }
     
-    public void setName(String name){ m_name = name;}
+    protected void setName(String name){ m_name = name;}
     public String getName(){ return m_name; }
     
-    public void setClient(Client client){ m_client = client;} 
+    protected void setClient(Client client){ m_client = client;} 
     public Client getClient(){ return m_client; }
     
-    public void setAccount(Account account){ m_currentAccount = account;}
+    protected void setAccount(Account account){ m_currentAccount = account;}
     public Account getAccount(){ return m_currentAccount;}
     
-    public void setBeforeOperationValue(double value){
+    protected void setBeforeOperationValue(double value){
         m_beforeOperationClientBalance = value;
     }
     
@@ -154,37 +154,37 @@ public class BankingOperation implements Operation, Serializable {
                         case Account.ACCOUNT_NORMAL:
                             return
                                 "CLIENTE: " + this.m_client.getName() +
-                                "\nOPERAÇÃO: " + this.getTypeDescription() +
-                                "\nID OPERAÇÃO: " + this.getId() +
-                                "\nCONTA NÚMERO: " + account.getNumber() +
-                                "\nCONTA TIPO: " + account.getAccountDescription() +
+                                "</br> OPERAÇÃO: " + this.getTypeDescription() +
+                                "</br> ID OPERAÇÃO: " + this.getId() +
+                                "</br> CONTA NÚMERO: " + account.getNumber() +
+                                "</br> CONTA TIPO: " + account.getAccountDescription() +
                                     //verificar como isso aqui vai ficar!
-                                "\nSALDO: " + this.m_client.getAccount().getBalance() + //this.m_beforeOperationClientBalance + //armengue! todo operacao guarda o estado anterior do saldo da conta!
-                                "\nEXECUTADA EM: " + this.getDateString();
+                                "</br> SALDO: " + this.m_client.getAccount().getBalance() + //this.m_beforeOperationClientBalance + //armengue! todo operacao guarda o estado anterior do saldo da conta!
+                                "</br> EXECUTADA EM: " + this.getDateString();
                     
                         case Account.ACCOUNT_SPECIAL:
                             double credit = ((SpecialAccount)account).getCredit();
                             return
                                 "CLIENTE: " + this.m_client.getName() +
-                                "\nOPERAÇÃO: " + this.getTypeDescription() +
-                                "\nID OPERAÇÃO: " + this.getId() +
-                                "\nCONTA NÚMERO: " + account.getNumber() +
-                                "\nCONTA TIPO: " + account.getAccountDescription() +
-                                "\nCRÉDITO: " +  credit +
+                                "</br> OPERAÇÃO: " + this.getTypeDescription() +
+                                "</br> ID OPERAÇÃO: " + this.getId() +
+                                "</br> CONTA NÚMERO: " + account.getNumber() +
+                                "</br> CONTA TIPO: " + account.getAccountDescription() +
+                                "</br> CRÉDITO: " +  credit +
                                     //verificar como isso aqui vai ficar!
-                                "\nSALDO PARCIAL: " + this.m_beforeOperationClientBalance +
-                                "\nSALDO TOTAL: " +  (credit + m_beforeOperationClientBalance) +//armengue! todo operacao guarda o estado anterior do saldo da conta!
-                                "\nEXECUTADA EM: " + this.getDateString() + "\n\n";
+                                "</br> SALDO PARCIAL: " + this.m_beforeOperationClientBalance +
+                                "</br> SALDO TOTAL: " +  (credit + m_beforeOperationClientBalance) +//armengue! todo operacao guarda o estado anterior do saldo da conta!
+                                "</br> EXECUTADA EM: " + this.getDateString() + "\n\n";
                     }
                 
                 default:
                     return 
                     "CLIENTE: " + m_client.getName() +
-                    "\nOPERAÇÃO: " + this.getTypeDescription() +
-                    "\nID OPERAÇÃO: " + this.getId() +
-                    "\nCONTA NÚMERO: " + account.getNumber() +
-                    "\nCONTA TIPO: " + account.getAccountDescription() +
-                    "\nEXECUTADA EM: " + this.getDateString() + "\n\n";
+                    "</br> OPERAÇÃO: " + this.getTypeDescription() +
+                    "</br> ID OPERAÇÃO: " + this.getId() +
+                    "</br> CONTA NÚMERO: " + account.getNumber() +
+                    "</br> CONTA TIPO: " + account.getAccountDescription() +
+                    "</br> EXECUTADA EM: " + this.getDateString() + "\n\n";
             }
         }
         finally {
@@ -216,10 +216,10 @@ public class BankingOperation implements Operation, Serializable {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public final void setTypeDesctiption(String type ){ m_operationTypeDescription = type; }
+    protected final void setTypeDesctiption(String type ){ m_operationTypeDescription = type; }
     public final String getTypeDescription(){ return m_operationTypeDescription; }
     
-    public void setDate(long date){ m_date = date; }
+    protected void setDate(long date){ m_date = date; }
     public final long getDate(){ return m_date; }
     
     public final String getDateString(){ 
@@ -228,7 +228,7 @@ public class BankingOperation implements Operation, Serializable {
         return dateFormatter.format(date); 
     }
     
-    public void setType(int type){ m_operationType = type;}
+    protected void setType(int type){ m_operationType = type;}
     public int getType(){ return m_operationType;}
     
     @Override

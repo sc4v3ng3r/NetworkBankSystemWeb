@@ -12,6 +12,38 @@ import static model.Account.ACCOUNT_TYPE_SPECIAL;
  *
  * @author scavenger
  */
+
+public class AccountFactory implements AccountFactoryInterface {
+
+    @Override
+    public Account createAccount(int type) {
+        Account acc = null;
+        switch(type){
+            case Account.ACCOUNT_NORMAL:
+                acc = new NormalAccount();
+                break;
+            case Account.ACCOUNT_SPECIAL:
+                acc = new SpecialAccount(0);
+                break;
+        }
+        
+        return acc;
+    }
+    
+    @Override
+    public Account createAccount(String type) {
+        switch(type){
+            case Account.ACCOUNT_TYPE_NORMAL:
+                return createAccount(Account.ACCOUNT_NORMAL);
+                
+            case Account.ACCOUNT_TYPE_SPECIAL:
+                return createAccount(Account.ACCOUNT_SPECIAL);
+                
+        }
+        return null;
+    }
+}
+/*
 public class AccountFactory {
     
     public Account createAccount(int type){
@@ -57,5 +89,6 @@ public class AccountFactory {
         owner.setAccount(account);
         return account;
     }
-  */  
+  
 }
+*/

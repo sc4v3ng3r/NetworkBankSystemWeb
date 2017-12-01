@@ -41,6 +41,8 @@ public class Transfer extends BankingMovimentation {
     /*protected Transfer(BankingTransferBuilder builder){
         setType(builder.);
     }*/
+    transient Operation m_toTransferOperation;
+    
     private Transfer(){}
     
     protected Transfer(BankingTransferBuilder builder){
@@ -74,6 +76,9 @@ public class Transfer extends BankingMovimentation {
         return m_to;
     }
 
+    private void setToTransferOperation(Operation op){ m_toTransferOperation = op;}
+    public Operation getToTransferOperation(){ return m_toTransferOperation;}
+    
     @Override
     public String getDetails() {
 
@@ -128,7 +133,9 @@ public class Transfer extends BankingMovimentation {
                         System.out.println(m_client + " -> " + m_value + " " + m_to);
                         m_to.getAccount().setBalance(toClientBalance + m_value);
                         // System.out.println(this.m_to.getOwner().getName() + " REgistrando!");
+                        
                         m_to.getAccount().addOperation(toTransfer);
+                        setToTransferOperation(toTransfer);
                         setDate(System.currentTimeMillis());
                         return true;
                     }
@@ -153,6 +160,7 @@ public class Transfer extends BankingMovimentation {
 
                         m_to.getAccount().setBalance(toClientBalance + m_value);
                         m_to.getAccount().addOperation(toTransfer);
+                        setToTransferOperation(toTransfer);
                         //m_to.registerLog(toTransfer);
                         setDate(System.currentTimeMillis());
                         return true;
@@ -168,6 +176,7 @@ public class Transfer extends BankingMovimentation {
 
                         m_to.getAccount().setBalance(toClientBalance + m_value);
                         m_to.getAccount().addOperation(toTransfer);
+                        setToTransferOperation(toTransfer);
                         setDate(System.currentTimeMillis());
                         return true;
                     }

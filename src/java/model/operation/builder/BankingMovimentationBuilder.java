@@ -30,10 +30,9 @@ public class BankingMovimentationBuilder extends BankingOperationBuilder {
     
     @Override
     public BankingMovimentationBuilder setName(String name) {
-        super.m_name = name;
+        super.setName(name);
         return this;
     }
-
 
     @Override
     public BankingMovimentationBuilder setType(int type) {

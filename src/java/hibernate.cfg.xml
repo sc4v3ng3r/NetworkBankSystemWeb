@@ -53,7 +53,7 @@ Contributor(s):
     <mapping class="model.SpecialAccount"/>
     <mapping class="model.operation.builder.BankingOperation"/>
     <mapping class="model.operation.builder.BankingMovimentation"/>
-    <mapping class="model.operation.builder.Transfer"/>
+    <!-- <mapping class="model.operation.builder.Transfer"/> -->
     
   </session-factory>
 </hibernate-configuration>

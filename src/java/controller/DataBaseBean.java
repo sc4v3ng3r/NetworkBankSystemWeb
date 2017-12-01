@@ -14,6 +14,7 @@ import model.Client;
  *
  * @author scavenger
  */
+
 @ManagedBean(name="DataBaseBean")
 public class DataBaseBean implements Serializable {
     

@@ -9,43 +9,50 @@
     </h:head>
     <h:body>
         <h:form id="formulario">
-        <p:fieldset legend="Criar Nova Conta">
-            <p:panelGrid>
-                <p:outputLabel value="Nome: " for="nameField"></p:outputLabel>
-                <p:inputText id="nameField" value="#{AccountManagerBean.clientName}" ></p:inputText>
+            <p:fieldset legend="Criar Nova Conta">
                 
-                <p:selectOneRadio value="#{AccountManagerBean.accountType}">
-                    <f:selectItem 
-                        itemLabel="Conta Normal"
-                        itemValue="NORMAL"
+                <p:panelGrid >
+                    <p:outputLabel value="Nome: " for="nameField"></p:outputLabel>
+                    <p:inputText id="nameField" 
+                                 value="#{AccountManagerBean.clientName}"
+                                 required="true"></p:inputText>
+
+                    <p:selectOneRadio 
+                        value="#{AccountManagerBean.accountType}"
+                        required="true"
                         >
-                                      
-                    </f:selectItem>
-                    <f:selectItem 
-                        itemLabel="Conta Especial"
-                        itemValue="SPECIAL">
-                            
-                    </f:selectItem>
-                </p:selectOneRadio>
-                
-                <p:commandButton value="Confirmar"
-                                 action="#{AccountManagerBean.confirmNewAccount()}"
-                                 update="@form :debug">
+
+                        <f:selectItem 
+                            itemLabel="Conta Normal"
+                            itemValue="NORMAL"
+                            >
+
+                        </f:selectItem>
+
+                        <f:selectItem 
+                            itemLabel="Conta Especial"
+                            itemValue="SPECIAL" />
+                        
+                    </p:selectOneRadio>
                     
-                </p:commandButton>
-                
-                <p:button
-                    outcome="#{AccountManagerBean.returnIndex()}"
-                    value="Cancelar">
-                </p:button>
-                
-                
-            </p:panelGrid>
-        </p:fieldset>
-            
+                    <p:commandButton value="Confirmar"
+                                     action="#{AccountManagerBean.confirmNewAccount()}"
+                                     update="@form :debug">
+
+                    </p:commandButton>
+
+                    <p:button
+                        outcome="#{AccountManagerBean.returnIndex()}"
+                        value="Cancelar">
+                    </p:button>
+
+
+                </p:panelGrid>
+            </p:fieldset>
+
         </h:form>
         <h:outputText id="debug" value="#{AccountManagerBean.debug}"></h:outputText>
-        
+
     </h:body>
 </html>
 

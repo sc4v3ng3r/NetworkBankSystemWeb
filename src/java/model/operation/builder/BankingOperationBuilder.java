@@ -7,7 +7,6 @@ package model.operation.builder;
 
 import model.Client;
 
-
 /**
  *
  * @author scavenger

@@ -7,12 +7,12 @@ package controller;
 
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import model.Account;
-import model.AccountFactory;
+import model.AccountManager;
 import model.operation.builder.BankingOperationBuilder;
 import model.Client;
 import model.operation.builder.Operation;
+
 
 /**
  *
@@ -26,8 +26,10 @@ public class AccountManagerBean implements Serializable {
     private String m_accountType = "";
     private String m_clientName = "";
     private String debug = "";
+    private String m_credit = "";
     
-    AccountFactory m_factory = new AccountFactory();
+    private final AccountManager m_manager = AccountManager.getInstance();
+    //AccountFactory m_factory = new AccountFactory();
     
     private ClientDAO m_dao = new ClientDAO();
 
@@ -64,8 +66,18 @@ public class AccountManagerBean implements Serializable {
         // adiciona ao banco de dados
 
         m_client = new Client(m_clientName);
-
-        Account acc = m_factory.createAccount(m_accountType);
+        Account acc = null;
+        
+        switch(m_accountType){
+            case Account.ACCOUNT_TYPE_NORMAL:
+                acc = m_manager.getNormalAccount();
+                break;
+            
+            case Account.ACCOUNT_TYPE_SPECIAL:
+                acc = m_manager.getEspecialAccount(2000);
+                break;
+        }
+        
         m_client.setAccount(acc);
 
         Operation op = new BankingOperationBuilder()
@@ -101,4 +113,11 @@ public class AccountManagerBean implements Serializable {
         this.m_client = client;
     }
 
+    public void setCredit(String c){
+        m_credit = c;
+    }
+    
+    public String getCredit(){
+        return m_credit;
+    }
 }

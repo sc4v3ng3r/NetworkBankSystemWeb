@@ -8,14 +8,12 @@ package model;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -24,12 +22,8 @@ import org.hibernate.annotations.OnDeleteAction;
  * @author scavenger
  */
 @Entity
-@Table(name="client", schema="MyBank"/*,
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = "accountNumber", name = "FK_CLIENT_ACCOUNT")*/  )
-/*@NamedQueries(
-        @NamedQuery(name="Client.getAll",query="SELECT c FROM client"  )
-)*/
+@Table(name="client", schema="MyBank")
+
 public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

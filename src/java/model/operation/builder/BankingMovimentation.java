@@ -61,13 +61,13 @@ public class BankingMovimentation extends BankingOperation {
         Date date = new Date(this.getDate());
 
         return "CLIENTE: " + this.m_client.getName()
-                + "\nOPERAÇÃO: " + this.getName() 
-                + "\nOPERAÇÃO TIPO: " + this.getTypeDescription()
-                + "\nID OPERAÇÃO: " + this.getId() 
-                + "\nCONTA NÚMERO: " + this.m_client.getAccount().getNumber()
-                + "\nCONTA TIPO: " + this.m_client.getAccount().getAccountDescription()
-                + "\nVALOR: " + this.getValue()
-                + "\nREALIZADA EM: " + this.getDateString() + "\n\n";
+                + "</br> OPERAÇÃO: " + this.getName() 
+                + "</br> OPERAÇÃO TIPO: " + this.getTypeDescription()
+                + "</br> ID OPERAÇÃO: " + this.getId() 
+                + "</br> CONTA NÚMERO: " + this.m_client.getAccount().getNumber()
+                + "</br> CONTA TIPO: " + this.m_client.getAccount().getAccountDescription()
+                + "</br> VALOR: " + this.getValue()
+                + "</br> REALIZADA EM: " + this.getDateString() + "\n\n";
     }
     
     @Override
@@ -140,6 +140,9 @@ public class BankingMovimentation extends BankingOperation {
                             m_locker.lock();
                         }
                         break;
+                
+                
+                
                 }
 
             default:
