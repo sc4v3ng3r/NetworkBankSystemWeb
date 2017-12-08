@@ -5,8 +5,6 @@
  */
 package model;
 
-import static model.Account.ACCOUNT_TYPE_NORMAL;
-import static model.Account.ACCOUNT_TYPE_SPECIAL;
 
 /**
  *
@@ -43,52 +41,3 @@ public class AccountFactory implements AccountFactoryInterface {
         return null;
     }
 }
-/*
-public class AccountFactory {
-    
-    public Account createAccount(int type){
-        return getAccount(type);
-        
-    }
-    
-    public Account createAccount(String type){
-        return getAccount(type);
-    }
-    
-    private Account getAccount(String type){
-        Account ac = null;
-        switch(type){
-            case ACCOUNT_TYPE_NORMAL:
-                ac = new NormalAccount();
-                break;
-            case ACCOUNT_TYPE_SPECIAL:
-                ac = new SpecialAccount(0);
-                break;
-        }
-        return ac;
-    }
-    
-    private Account getAccount(int type){
-        Account ac = null;
-        
-        switch(type) {
-            case Account.ACCOUNT_NORMAL:
-                ac = new NormalAccount();
-                break;
-                
-            case Account.ACCOUNT_SPECIAL:
-                ac = new SpecialAccount(0);
-                break;
-        }
-        return ac;
-    }
-    
-/*    
-    public Account createAccount(int type, Client owner){
-        Account account = getAccount(type);
-        owner.setAccount(account);
-        return account;
-    }
-  
-}
-*/

@@ -14,16 +14,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import model.Client;
-import model.operation.builder.BankingMovimentation;
 import model.operation.builder.BankingMovimentationBuilder;
-import model.operation.builder.BankingOperation;
 import model.operation.builder.BankingOperationBuilder;
-import model.operation.builder.BankingTransferBuilder;
 import model.operation.builder.Operation;
-import model.operation.builder.Transfer;
-import org.hibernate.Session;
 import org.primefaces.context.RequestContext;
-import web.bank.system.util.NewHibernateUtil;
+//import web.bank.system.util.NewHibernateUtil;
 
 /**
  *
@@ -37,8 +32,7 @@ public class OperationBean implements Serializable {
     private String m_headerTxt = "";
     private String m_value = "";
     private String m_queryOutput= "";
-    private final ClientDAO m_db = new ClientDAO();
-    
+    private final Repository m_repository;
     private List<Client> m_currentList;
     private Long m_selectedAccountToTransfer;
 
@@ -47,34 +41,13 @@ public class OperationBean implements Serializable {
     public OperationBean() {
         String accountNumber = (String) FacesContext.getCurrentInstance().
                 getExternalContext().getFlash().get("CURRENT_ACCOUNT");
-
-        m_currentClient = getCurrentClient(accountNumber);
-        System.out.println("\n########################################################\n");
-        System.out.println("OperationBean::CONSTRUCTOR recovery: " + m_currentClient);
+        m_repository = Repository.getInstance();
         
-        BankingOperation op = (BankingOperation) m_currentClient.getAccount().getOperationList().get(0);
-        System.out.println(op);
+        m_currentClient =  m_repository.getById( Long.parseLong(accountNumber)); 
         m_headerTxt = "Cliente: " + m_currentClient.getName()
                 + "    |    Conta: " + m_currentClient.getAccount().getNumber();
-        
     }
-
-    private Client getCurrentClient(String accountNumber) {
-        ClientDAO dao = new ClientDAO();
-        List<Client> list = dao.getClientListFromDB();
-        long number = Long.parseLong(accountNumber);
-        Client client = null;
-
-        for (Client c : list) {
-            if (c.getAccount().getNumber() == number) {
-                System.out.println("GOT IT!");
-                client = c;
-                break;
-            }
-        }
-        return client;
-    }
-
+    
     public void setClient(Client c) {
         m_currentClient = c;
     }
@@ -134,22 +107,9 @@ public class OperationBean implements Serializable {
                 new FacesMessage(FacesMessage.SEVERITY_ERROR,
                         "Erro!", msg));
     }
-
-    /*SUBSTITUIR PELO DAO?!*/
-    private void registerOperation(Operation operation) {
-        Session s = NewHibernateUtil.getSessionFactory().openSession();
-        s.getTransaction().begin();
-        //s.update(m_currentClient);
-        s.save(operation);
-        s.flush();
-        s.getTransaction().commit();
-        s.close();
-    }
     
-    // verificar se tudo isso Eh mesmo necessario!
     private void fillData() {
-        m_currentList = m_db.getClientListFromDB();
-        
+        m_currentList = m_repository.getClientListFromDB();
         m_hashMap.clear();
         
         long currentAccount = m_currentClient.getAccount().getNumber();
@@ -166,6 +126,7 @@ public class OperationBean implements Serializable {
         
     }
     
+    /*UTILIZAR ESSE METODO DO REPOSITORY!*/
     private Client findClientByAccountNumber(long number){
         Client c = null;
         for(int i =0; i < m_currentList.size(); i++){
@@ -176,6 +137,7 @@ public class OperationBean implements Serializable {
         }
         return null;
     }
+    
     public Map<String, Long> getClientsHashMap(){ return m_hashMap; }
     
     private void updateElement(String element){
@@ -194,20 +156,22 @@ public class OperationBean implements Serializable {
        openDialog("TransferDialog");
     }
     
-    public ClientDAO getDB(){ return m_db;}
-    public List<Client> getClientsToTransfer(){ return m_currentList; }//return m_clientsToTransfer;}
+    public void setQueryOutput(String query){ m_queryOutput = query;}
     
+    public String getQueryOutput(){ return m_queryOutput;}
     
     public void execute(int type) {
         Operation op = null;
 
         switch (type) {
             case Operation.OPERATION_TYPE_DRAFT:
+                double value;
                 
-                double value = Double.parseDouble(m_value);
-                System.out.println("OPERAÇÃO SAQUE!");
-                
-                op = new BankingMovimentationBuilder(Operation.OPERATION_TYPE_DRAFT, m_currentClient)
+                try{
+                    value = Double.parseDouble(m_value);
+                    System.out.println("OPERAÇÃO SAQUE!");
+                    
+                    op = new BankingMovimentationBuilder(Operation.OPERATION_TYPE_DRAFT, m_currentClient)
                         .setTypeDescription(Operation.OPERATION_DESCRIPTION_DEBIT)
                         .setName(Operation.OPERATION_DRAFT)
                         .setValue(value)
@@ -215,25 +179,35 @@ public class OperationBean implements Serializable {
                         
                 if ( op.execute() ){
                     OperationSucess("Saque realizado com sucesso!");
-                    registerOperation(op);
+                    m_repository.registerOperation(op);
+                    
                 } else
                     OperationFailed("Saldo indisponível");
                 
-                closeDialog("DraftDialog");
-                setValue("");
+                    closeDialog("DraftDialog");
+                    setValue("");
+                } catch(NumberFormatException ex){
+                    OperationFailed("Valor Inválido");
+                    break;
+                    // MSG DE VALOR INVALIDO!
+                }
+                
                 break;
 
             case Operation.OPERATION_TYPE_DEPOSIT:
+                try{
                 value = Double.parseDouble(m_value);
 
-                op = new BankingMovimentationBuilder(Operation.OPERATION_TYPE_DEPOSIT, m_currentClient)
+                op = new BankingMovimentationBuilder(Operation.OPERATION_TYPE_DEPOSIT, 
+                        m_currentClient)
                         .setName(Operation.OPERATION_DEPOSIT)
                         .setTypeDescription(Operation.OPERATION_DESCRIPTION_CREDIT)
                         .setValue(value)
                         .build();
 
                 if (op.execute()) {
-                    registerOperation(op);
+                    
+                    m_repository.registerOperation(op);
                     OperationSucess("Depósito realizado com sucesso!");
                     
                 } else 
@@ -242,12 +216,23 @@ public class OperationBean implements Serializable {
                 System.out.println("OPERAÇÃO DEPÓSITO");
                 closeDialog("DepositDialog");
                 setValue("");
+                
+                } catch(NumberFormatException ex){
+                    OperationFailed("Valor Inválido");
+                    break;
+                }
                 break;
             
             case Operation.OPERATION_TYPE_TRANSFER:
-                long toTransfer = 0;
+                Long toTransfer = null;
                 try{
                     toTransfer = getSelectedAccountToTransfer();
+                    if (toTransfer == null){
+                        OperationFailed("Selecione um cliente");
+                        return;
+                    }
+                    
+                    
                     value = Double.parseDouble(m_value);
                     System.out.println("PROCURANDO POR CLIENTE DE CONTA "  +toTransfer);
                     
@@ -264,7 +249,9 @@ public class OperationBean implements Serializable {
                             .build();
                    
                     if ( op.execute() ){
-                        registerOperation(op);
+                        
+                        m_repository.registerOperation(op);
+                        
                         op = new BankingMovimentationBuilder(Operation.OPERATION_TYPE_DEPOSIT, 
                                 clientoTransfer)
                             .setName(Operation.OPERATION_TRANSFER)
@@ -274,7 +261,7 @@ public class OperationBean implements Serializable {
                             .build();
                         
                         op.execute();
-                        registerOperation(op);
+                        m_repository.registerOperation(op);
                         OperationSucess("Transferência Realizada!");
                         
                     } else OperationFailed("Transferência não realizada!");
@@ -282,26 +269,14 @@ public class OperationBean implements Serializable {
                     setValue("");
                     
                     
-                } catch(Exception ex){
-                    System.out.println("OLHA LA RAPAZ!");
-                    
+                } catch(NumberFormatException ex){
+                    OperationFailed("Valor Inválido");
                     break;
                 }
-                
-                //value = Double.parseDouble(m_value);
-                
-                // obeter a conta ou o cliente que vai receber a transferencia!
-                //Long l = m_hashMap.get(getClientsToTransfer());
-                System.out.println("Selecionou: " + getSelectedAccountToTransfer()
-                + " Conta numero " );
-                
-                
                 closeDialog("TransferDialog");
                 break;
                 
             case Operation.OPERATION_TYPE_QUERY:
-                m_currentClient = m_db.getById(m_currentClient.getId());
-                System.out.println(m_currentClient + "UPDATED BY ID!");
                 
                 op = new BankingOperationBuilder(Operation.OPERATION_TYPE_QUERY, m_currentClient)
                         .setName(Operation.OPERATION_QUERY)
@@ -309,7 +284,8 @@ public class OperationBean implements Serializable {
                         .build();
                 
                 if (op.execute()){
-                    registerOperation(op);
+                    
+                    m_repository.registerOperation(op);
                     setQueryOutput( op.getDetails());
                     updateElement("queryForm");
                     openDialog("queryDialog");
@@ -317,7 +293,6 @@ public class OperationBean implements Serializable {
                 break;
                 
             case Operation.OPERATION_TYPE_EXTRACT:
-                m_currentClient = m_db.getById(m_currentClient.getId());
                 op = new BankingOperationBuilder(Operation.OPERATION_TYPE_EXTRACT, m_currentClient)
                         .setName(Operation.OPERATION_EXTRACT)
                         .setTypeDescription(Operation.OPERATION_EXTRACT)
@@ -331,7 +306,7 @@ public class OperationBean implements Serializable {
                     output+= "</br> </br>";
                 }
                 if (op.execute()){
-                    registerOperation(op);
+                    m_repository.registerOperation(op);
                     setQueryOutput(output);
                     updateElement("scrollPanel");
                     updateElement("extractForm");
@@ -343,10 +318,4 @@ public class OperationBean implements Serializable {
                 break;
         }
     }
-    
-    public void setQueryOutput(String query){ m_queryOutput = query;}
-    
-    public String getQueryOutput(){ return m_queryOutput;}
-    
-    public OperationBean getOperationBean(){ return this;}
 }

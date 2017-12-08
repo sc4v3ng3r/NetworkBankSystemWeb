@@ -27,11 +27,13 @@ public class AccountManagerBean implements Serializable {
     private String m_clientName = "";
     private String debug = "";
     private String m_credit = "";
+    private final Repository m_repository = Repository.getInstance();
     
+    // fazedor de contas bancarias!
     private final AccountManager m_manager = AccountManager.getInstance();
     //AccountFactory m_factory = new AccountFactory();
     
-    private ClientDAO m_dao = new ClientDAO();
+    //private ClientDAO m_dao = new ClientDAO();
 
     public String getAccountType() {
         return this.m_accountType;
@@ -62,7 +64,7 @@ public class AccountManagerBean implements Serializable {
     }
 
     public String confirmNewAccount() {
-        // valida os dados inseridos!
+        // validar os dados inseridos!
         // adiciona ao banco de dados
 
         m_client = new Client(m_clientName);
@@ -90,7 +92,11 @@ public class AccountManagerBean implements Serializable {
         op.execute();
         
         System.out.println("Criado : " + m_client);
-        m_dao.add(m_client);
+        
+        m_repository.add(m_client);
+        
+        // usar repository
+        //m_dao.add(m_client);
 
         System.out.println("CRIAMOS OPERATION\n" + op.getDetails());
         m_client = null;
@@ -120,4 +126,5 @@ public class AccountManagerBean implements Serializable {
     public String getCredit(){
         return m_credit;
     }
+    
 }

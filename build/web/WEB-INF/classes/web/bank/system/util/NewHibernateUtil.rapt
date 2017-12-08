@@ -1,0 +1,7 @@
+model/Client_.java
+model/operation/builder/Transfer_.java
+model/NormalAccount_.java
+model/Account_.java
+model/operation/builder/BankingOperation_.java
+model/operation/builder/BankingMovimentation_.java
+model/SpecialAccount_.java

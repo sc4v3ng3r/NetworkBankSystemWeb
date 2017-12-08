@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package controller;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import model.Client;
 
@@ -16,18 +18,19 @@ import model.Client;
  */
 
 @ManagedBean(name="DataBaseBean")
+
 public class DataBaseBean implements Serializable {
     
-    private ClientDAO m_dao = new ClientDAO();
-    
+    private final Repository m_repository = Repository.getInstance();
     public DataBaseBean(){}
     
-    public void add(Client client) { m_dao.add(client); }
-    
-    public List<Client> getClients(){ return m_dao.getList();}
+    public List<Client> getClientListFromDB(){
+        return m_repository.getClientListFromDB();
+    }
     
     public void removeFirst(){
-        m_dao.removeFirst();
+        m_repository.removeFirst();
     }
+    
     
 }

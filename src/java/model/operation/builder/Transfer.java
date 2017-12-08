@@ -21,11 +21,11 @@ import model.SpecialAccount;
  *
  * @author scavenger
  */
-@Entity
-@Table(name = "transfer", schema = "MyBank")
+//@Entity
+//@Table(name = "transfer", schema = "MyBank")
 public class Transfer extends BankingMovimentation {
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name="clientId" )
+   // @OneToOne(optional = false, cascade = CascadeType.ALL)
+   // @JoinColumn(name="clientId" )
     Client m_to;
     //double m_value;
 
